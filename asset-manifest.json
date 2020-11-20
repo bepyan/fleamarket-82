@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/fleamarket-82/static/css/main.6e9ebeb3.chunk.css",
+    "main.js": "/fleamarket-82/static/js/main.cc455732.chunk.js",
+    "main.js.map": "/fleamarket-82/static/js/main.cc455732.chunk.js.map",
+    "runtime-main.js": "/fleamarket-82/static/js/runtime-main.337f3e98.js",
+    "runtime-main.js.map": "/fleamarket-82/static/js/runtime-main.337f3e98.js.map",
+    "static/js/2.4f9942ba.chunk.js": "/fleamarket-82/static/js/2.4f9942ba.chunk.js",
+    "static/js/2.4f9942ba.chunk.js.map": "/fleamarket-82/static/js/2.4f9942ba.chunk.js.map",
+    "index.html": "/fleamarket-82/index.html",
+    "precache-manifest.c7b85582193237d061c9bb7f000a2d02.js": "/fleamarket-82/precache-manifest.c7b85582193237d061c9bb7f000a2d02.js",
+    "service-worker.js": "/fleamarket-82/service-worker.js",
+    "static/css/main.6e9ebeb3.chunk.css.map": "/fleamarket-82/static/css/main.6e9ebeb3.chunk.css.map",
+    "static/js/2.4f9942ba.chunk.js.LICENSE.txt": "/fleamarket-82/static/js/2.4f9942ba.chunk.js.LICENSE.txt",
+    "static/media/logo_1.png": "/fleamarket-82/static/media/logo_1.90ac4654.png",
+    "static/media/school2.csv": "/fleamarket-82/static/media/school2.400044b6.csv"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.337f3e98.js",
+    "static/js/2.4f9942ba.chunk.js",
+    "static/css/main.6e9ebeb3.chunk.css",
+    "static/js/main.cc455732.chunk.js"
+  ]
+}
