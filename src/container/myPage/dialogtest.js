@@ -148,11 +148,6 @@ function Dialogtest(props) {
         })
     }
 
-    const closeAndRefresh = () => {
-        setOpen(false)
-        window.location.reload()
-    }
-
     const isNull = (value) => {
         if (!value) return "아직 없어요 ! :)"
         else return value
@@ -201,9 +196,8 @@ function Dialogtest(props) {
                     </Grid>
                     <br></br>
                     <div style={{marginBottom: '10px'}}>
-                        <IconButton variant="text" onClick={() => updateUserInfo()}><CheckIcon color="grey"/></IconButton>
-                        <IconButton variant="text" onClick={() => deleteUserInfo()}><DeleteForeverIcon color="grey"/></IconButton>
-                        <IconButton variant="text" onClick={() => closeAndRefresh()}><CloseIcon color="grey"/></IconButton>
+                        <IconButton variant="text" onClick={() => updateUserInfo()}><CheckIcon color="action"/></IconButton>
+                        <IconButton variant="text" onClick={() => deleteUserInfo()}><DeleteForeverIcon color="action"/></IconButton>
                     </div>
                 </form>
             </CenterDialog>

@@ -80,8 +80,8 @@ function Register() {
     // 데이터 입력
     axios.post(ip+"/users/register", newUser)
       .then(() => {
-        enqueueSnackbar('모든 값을 넣어 주셔야 합니다..', { variant: 'success'})
         window.location.reload()
+        enqueueSnackbar('회원가입에 성공했습니다. 로그인하세요.', { variant: 'success'})
       })
       .catch(e => {
         console.log(e)

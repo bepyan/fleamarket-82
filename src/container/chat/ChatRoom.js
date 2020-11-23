@@ -94,7 +94,7 @@ function ChatRoom(props) {
     }
     /* 채팅방 나가기 */
     const exitRoom = () => {
-        if (room.state === 0 || room.state === 5 || room.state === 10) {
+        if (room.state === 0 || room.state === 1 || room.state === 7 || room.state === 9 || room.state === 11) {
             let result = window.confirm("정말 방을 나가시겠습니까?\n대화내용이 삭제됩니다")
             if (result) {
                 sendMessage(9)
