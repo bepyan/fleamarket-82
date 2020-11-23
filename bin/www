@@ -1,0 +1,173 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('test-express:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3001');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+//---------채팅용 socket--------------------//
+var io = require('socket.io')(server);
+
+var numUsers = 0;
+var clients = [];
+
+io.on('connection', (socket) => {
+  var addedUser = false;
+  
+  socket.on('join', (user_id) => {
+    if (user_id === null || user_id === undefined) return;
+    if (addedUser) return;
+
+    ++numUsers;
+    addedUser = true;
+  
+    clients.push({ uid: socket.id, user_id: user_id })
+    console.log(user_id + "님이 접속하셨습니다." + "  socket id: " + socket.id);
+    console.log('접속 중인 사용자 수 : ' + numUsers + '명');
+    
+    
+  })
+
+
+  socket.on("new_msg", (data) => {
+    var i = 0;
+    while (i < clients.length) {
+      if (clients[i].user_id === data.user) {
+        var msg = {chatlog:data.chatlog, id:data.id}
+        
+        io.to(clients[i].uid).emit("new_msg", msg)
+        io.to(clients[i].uid).emit("notification", data)
+        io.to(clients[i].uid).emit("update_chatlog",data.id)
+
+        if(data.chatlog.type!==9){
+          io.to(socket.id).emit("update_notification")
+        }  
+        break;
+      }
+      i = i + 1;
+    }
+
+  })
+
+  socket.on("new_room", (data) => {
+    var i = 0;
+    while (i < clients.length) {
+      if (clients[i].user_id === data.user) {
+        io.to(clients[i].uid).emit("new_room",data.id)
+        break;
+      }
+      i = i + 1;
+    }
+    io.to(socket.id).emit("new_room",data.id)
+    io.to(socket.id).emit("open_chat")
+  })
+
+  socket.on("exit_room", (data) => {
+    var i = 0;
+    while (i < clients.length) {
+      if (clients[i].user_id === data.user) {
+        io.to(clients[i].uid).emit("exit_room2",data.id)
+        break;
+      }
+      i = i + 1;
+    }
+    io.to(socket.id).emit("exit_room1",data.id)
+  })
+  
+
+  socket.on("disconnect", () => {
+    if (addedUser) {
+      --numUsers;
+      clients.splice(clients.indexOf(socket.id), 1);
+    }
+    console.log(socket.username + "님이 퇴장했습니다");
+    console.log('접속 중인 사용자수 : ' + numUsers + '명');
+
+  }
+  );
+
+})
+
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
