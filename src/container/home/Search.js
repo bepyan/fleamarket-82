@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import {ip} from "../../store/ip"
 import { useSnackbar } from 'notistack';
+import { withRouter } from 'react-router-dom'
 
 import { Chip, Divider, Fade, Grid, IconButton, InputBase, List, ListItem, ListItemText, Paper, Popper, Tooltip} from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
@@ -67,7 +68,7 @@ function Search(props) {
     getBoards({search: text})
   }
   const registKeyword = () => {
-    if(user_id){
+    if(!user_id){
       props.history.push("/login")
       return enqueueSnackbar('로그인하셔야 합니다', { variant: 'error'})
     }
@@ -193,4 +194,4 @@ function Search(props) {
   )
 }
 
-export default Search
+export default withRouter(Search)
