@@ -10,6 +10,7 @@ import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Avatar from '@material-ui/core/Avatar';
+import CachedRoundedIcon from '@material-ui/icons/CachedRounded';
 
 import moment from 'moment';
 
@@ -42,7 +43,6 @@ function ChatRoom(props) {
     const [room, setRoom] = props.useRoom
     const setRead = props.setRead
     const user_id = window.sessionStorage.getItem('id')
-    const socket = props.socket;
     const [text, setText] = useState("")
     const [chatlog, setChatlog] = useState([])
 
@@ -53,55 +53,38 @@ function ChatRoom(props) {
         getChatlog()
         setOther()
         setRead(room.id, false)
-        socket.on("update_chatlog", (id) => {
-            if (room.id === id) {
-                getChatlog()
-                setRead(room.id, false)
-            }
-        })
-        return () => {
-            socket.off("update_chatlog")
-        }
     }, [room])
 
-    useEffect(() => {
-
-        socket.on("exit_room", () => {
-            setOtherUser('')
-        })
-
-    }, [])
-
-        /* 채팅로그 아이디, 시간 get하는 함수 */
-        const getChatlogTime = () => {
-            axios
-            .get(ip+"/chat/chatTime", {
-                params : {
-                    chat_id : room.id
-                }
-            })
-            .then((data)=>{
-                const logData = data.data;
-                if (logData[1]) {
-                    calcTime(logData[0].user_id, logData[0].sendTime, logData[1].user_id, logData[1].sendTime)
-                }
-            })
-            .catch(err=>console.log(err))
-    
-        }
-        /* 시간계산함수 */
-        const calcTime = (id1,st1,id2,st2) => {
-            let time = parseInt( (new Date(st1) - new Date(st2) )/1000)
-            if (id1 !== id2 && time < 1800) {
-                axios
-                    .post(ip + "/chat/chatScore", {
-                        user_id: id1
-                    })
-                    .then(() => {
-                    })
-                    .catch(err => console.log(err))
+    /* 채팅로그 아이디, 시간 get하는 함수 */
+    const getChatlogTime = () => {
+        axios
+        .get(ip+"/chat/chatTime", {
+            params : {
+                chat_id : room.id
             }
+        })
+        .then((data)=>{
+            const logData = data.data;
+            if (logData[1]) {
+                calcTime(logData[0].user_id, logData[0].sendTime, logData[1].user_id, logData[1].sendTime)
+            }
+        })
+        .catch(err=>console.log(err))
+
+    }
+    /* 시간계산함수 */
+    const calcTime = (id1,st1,id2,st2) => {
+        let time = parseInt( (new Date(st1) - new Date(st2) )/1000)
+        if (id1 !== id2 && time < 1800) {
+            axios
+                .post(ip + "/chat/chatScore", {
+                    user_id: id1
+                })
+                .then(() => {
+                })
+                .catch(err => console.log(err))
         }
+    }
     
 
     const hiddenFileInput = React.useRef(null);
@@ -130,14 +113,17 @@ function ChatRoom(props) {
         copy.push(log)
         setChatlog(copy)
     }
+    const clickRefresh = () => {
+        getChatlog()
+    }
+
     // type 0: 일반 메시지 1: 구매요청 2: 구매수락 3: 물품구매 4: 구매확정 5: 거래완료 10: 거래취소
     const sendMessage = (type, url = "") => {
         if (!type && !text)
             return
         const log = { chat_id: room.id, user_id: user_id, contents: type ? url : text, type: type, sendTime:time }
         axios.post(ip + "/chat/chatlog", log)
-            .then(res => {
-                
+            .then(() => {
                 //getChatlog()
                 updateChatlog(log)
                 setText("")
@@ -147,7 +133,6 @@ function ChatRoom(props) {
                 console.log(err)
                 alert(err)
             })
-        socket.emit("new_msg", {user:other_user, chatlog:log, sender:user_id, id:room.id})
     }
  
   
@@ -215,18 +200,11 @@ function ChatRoom(props) {
             if (result) {
                 sendMessage(9)
 
-                var type = null;
-                if(isSeller(user_id)){
-                    type = 'seller'
-                } else{
-                    type = 'buyer'
-                }
-                var data = { type:type, id: room.id }
+                var type = isSeller(user_id) ? 'seller' : 'buyer'
+                var data = { type: type, id: room.id }
 
                 axios.post(ip + "/chat/exit", data)
-                    .then(res => {
-                        var data = { user: other_user, id: room.id }
-                        socket.emit("exit_room", data)
+                    .then(() => {
                         setRoom({})
                     })
                     .catch(err => {
@@ -264,17 +242,17 @@ function ChatRoom(props) {
                         <Avatar alt="img" src={room.images} />
                     </Grid>
                     <Grid item xs={12} sm container>
-                    <Grid item xs container direction="column" spacing={0}>
-                        <Grid item xs> 
-                        <h3 style={{ width: "300px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{room.title}</h3>
+                        <Grid item xs container direction="column" spacing={0}>
+                            <Grid item xs> 
+                                <h3 style={{ width: "300px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{room.title}</h3>
+                            </Grid>
+                            <Grid item xs> 
+                                <div style={{ marginTop: '0px' }}>{room.price.format()}원</div>
+                            </Grid>
                         </Grid>
-                        <Grid item xs> 
-                        <div style={{ marginTop: '0px' }}>{room.price.format()}원</div>
-                        </Grid>
-                         
                     </Grid>
-                    </Grid> 
-                    
+                    <Grid item>
+                    </Grid>
                 </Grid>
             </header>
 
@@ -320,6 +298,9 @@ function ChatRoom(props) {
                             />
                         </IconButton >
                     </div>
+                    <IconButton size="small" onClick={() => clickRefresh()} style={{marginLeft: '10px'}}>
+                        <CachedRoundedIcon style={{fontSize:30 }}/>
+                    </IconButton>
                     <Contract useRoom={[room, setRoom]} ViewType={room.buyer_id===user_id?1:2} chatlog={[chatlog, setChatlog]} sendMessage={sendMessage}/>
                 </Grid>
             </Grid>

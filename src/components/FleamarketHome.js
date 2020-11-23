@@ -10,7 +10,6 @@ import Alert from "../container/home/Alert"
 import Board from "../container/board/Board"
 
 import { Collapse, Grid, IconButton } from "@material-ui/core";
-import socket from '../store/socket'
 import { useSnackbar } from 'notistack';
 
 function FleamarketHome(props){
@@ -37,13 +36,6 @@ function FleamarketHome(props){
     if(!openUL)
       setOpenChat(false)
     setOpenUL(!openUL)
-  }
-  const clickChat = () => {
-    if(!window.sessionStorage.getItem("id"))
-      return setAlertOption(loginAlert)
-    if(!openChat)
-      setOpenUL(false)
-    setOpenChat(!openChat)
   }
   const clickMyPage = () => {
     if(!window.sessionStorage.getItem("id"))
@@ -80,9 +72,6 @@ function FleamarketHome(props){
   
   useEffect(() => {
     getBoards()
-    socket.on("notification", (data) => {
-      enqueueSnackbar(data.sender + '님이 ' + messageSnackbar(data.chatlog.type))
-    })
   }, []) 
 
   const messageSnackbar = (type) => {
@@ -106,9 +95,6 @@ function FleamarketHome(props){
           <div style={{textAlign: 'center'}}>
             <IconButton onClick={() => clickUL()} >              
               <img src="https://img.icons8.com/cotton/64/000000/upload-to-cloud--v1.png" alt='bt1'/>
-            </IconButton>
-            <IconButton onClick={() => clickChat()}>
-              <img src="https://img.icons8.com/cotton/64/000000/chat.png" alt='bt2'/>  
             </IconButton>
             <IconButton onClick={() => clickMyPage()}>
               <img src="https://img.icons8.com/cotton/64/000000/gender-neutral-user--v1.png" alt='bt3'/>

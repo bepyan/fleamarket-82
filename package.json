@@ -56,7 +56,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "https://fleamarket-82.herokuapp.com",
   "homepage": "https://bepyan.github.io/fleamarket-82",
   "devDependencies": {
     "gh-pages": "^3.1.0"

@@ -11,7 +11,6 @@ import Login from "./components/FleamarketLogin"
 import Footer from "./components/Footer"
 import Action from "./components/Action"
 import MyPage from "./components/FleamarketMyPage"
-import socket from '../src/store/socket'
 
 function App() {
   const [logged, setLogged] = useState(false)
@@ -26,10 +25,6 @@ function App() {
   useEffect(() => {
     if(window.sessionStorage.getItem('id'))
       onLogin()
-
-      socket.on("open_chat",()=>{
-        setOpenChat(true)
-      })    
   }, [])
 
   return(

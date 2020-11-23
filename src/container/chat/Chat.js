@@ -3,7 +3,7 @@ import ChatRoom from './ChatRoom'
 import axios from 'axios';
 import { ip } from '../../store/ip'
 
-import { Grid } from '@material-ui/core';
+import { Grid, IconButton } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Avatar from '@material-ui/core/Avatar';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
-import socket from '../../store/socket'
+import CachedRoundedIcon from '@material-ui/icons/CachedRounded';
 import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
@@ -59,46 +59,8 @@ function    Chat() {
     const classes = useStyles();
 
     useEffect(() => {
-        if (user_id) {
-            socket.emit('join', user_id);
-        }
-    }, [user_id])
-
-    useEffect(() => {
         getRooms()
     }, [])
-
-    useEffect(() => {
-        socket.on("update_notification", () => {
-            setRead(room.id, false)
-        })
-        return () => {
-            socket.off("update_notification")
-        }
-    }, [room])
-
-    useEffect(() => {
-        socket.on("new_msg", (msg) => {
-            setRead(msg.id, true)
-        })
-        socket.on("new_room", (room_id) => {
-            getNewRoom(room_id)
-        })
-        socket.on('exit_room1', (room_id) => {
-            updateRoom(room_id, 'exit1')
-        })
-        socket.on('exit_room2', (room_id) => {
-            updateRoom(room_id, 'exit2')
-        })
-
-        return () => {
-            socket.off("new_msg")
-            socket.off("new_room")
-            socket.off("exit_room1")
-            socket.off("exit_room2")
-        }
-
-    }, [roomList])
 
     //새로운 메시지 count
     const setRead = (id, new_msg) => {
@@ -151,7 +113,6 @@ function    Chat() {
     }
     //'new_room' 새로운 방 추가 때문에 만듬
     const getNewRoom = (room_id) => {
-        
         axios.get(ip + "/chat/room", { params: { id: room_id } })
             .then(res => {
                 var list = roomList.concat()
@@ -274,7 +235,12 @@ function    Chat() {
             {/* 채팅방 리스트 */}
             <Grid item>
                 <div className={classes.chatlist}>
-                    <h2 className={classes.border}>Messenger</h2>
+                    <div style={{display: 'flex'}}>
+                        <h2 className={classes.border}>Messenger</h2>
+                        <IconButton style={{marginLeft: '140px'}}>
+                            <CachedRoundedIcon/>
+                        </IconButton>
+                    </div>
                     <List className={classes.root}>
                         {roomList.length ? renderLists : <div> 채팅방이 없습니다 </div>}
                     </List>
@@ -284,7 +250,7 @@ function    Chat() {
             <Grid item style={{ width: '480px' }}>
                 {!("id" in room) ? null :
                     <div className={classes.chatroom}>
-                        <ChatRoom useRoom={[room, setRoom]} setRead={setRead} socket={socket} />
+                        <ChatRoom useRoom={[room, setRoom]} setRead={setRead}/>
                     </div>
                 }
             </Grid>

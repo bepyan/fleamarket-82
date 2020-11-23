@@ -16,7 +16,6 @@ import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import socket from '../../store/socket'
 
 // 여러 상세페이지를 띄워 주고 싶은 기능 생각해야
 function BoardDetail(props) {
@@ -196,9 +195,6 @@ function BoardDetail(props) {
                 setOpen(false)
                 enqueueSnackbar(board.seller_id + '님과 대화를 시작합니다.')
                 newRoom_id = res.data.id
-                //판매자에게 새로운 채팅방 알림
-                var data = {user:board.seller_id, id:newRoom_id}
-                socket.emit("new_room", data);  
             })
             .catch(err => {
                 console.log(err)
