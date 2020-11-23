@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/fleamarket-82/precache-manifest.3f99c47661a500664f81045be563d80d.js"
+  "/fleamarket-82/precache-manifest.eae702ab6aab720df37a44e316f7022f.js"
 );
 
 self.addEventListener('message', (event) => {
