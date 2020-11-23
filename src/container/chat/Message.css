@@ -1,0 +1,136 @@
+li {
+  list-style: none;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .message .time{
+    display: flex;
+    color: #999;
+    font-weight: 600;
+    font-size: 12px;
+    margin: 0px 0px;
+    text-transform: uppercase;
+    justify-content: center;
+  }
+  .message .timestamp {
+    display: flex;
+    color: #999;
+    font-weight: 600;
+    font-size: 12px;
+    margin: -5px 0px;
+    text-transform: uppercase;
+  }
+  .message.mine .timestamp {
+    justify-content: flex-end;
+  }
+  
+  /*=============일반 메시지==============================*/
+  .message .bubble-container {
+    font-size: 18px;
+    display: flex;
+  }
+  
+  .message.mine .bubble-container {
+    justify-content: flex-end;
+  }
+ .start .bubble-container .bubble {
+    /* margin-top: 10px; */
+    border-top-left-radius: 20px;
+  }
+  
+  .message.end .bubble-container .bubble {
+    border-bottom-left-radius: 20px;
+    /* margin-bottom: 10px; */
+  }
+ 
+  
+  .message.mine.start .bubble-container .bubble {
+    margin-top: 10px;
+    border-top-right-radius: 20px;
+  }
+  
+  .message.mine.end .bubble-container .bubble {
+    border-bottom-right-radius: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .message .bubble-container .bubble {
+     margin: 1px 0px;
+    background: #f4f4f8;
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 75%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  
+  .message.mine .bubble-container .bubble {
+    background: rgb(110, 110, 255);
+    color: white;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+/*===========시스템 메시지=======================================*/
+.message .system-container {
+  font-size: 18px;
+  display: flex;
+}
+
+.message.mine .system-container {
+  justify-content: flex-end;
+}
+.start .system-container .system {
+  /* margin-top: 10px; */
+  border-top-left-radius: 20px;
+}
+
+.message.end .system-container .system {
+  border-bottom-left-radius: 20px;
+  /* margin-bottom: 10px; */
+}
+
+
+.message.mine.start .system-container .system {
+  margin-top: 10px;
+  border-top-right-radius: 20px;
+}
+
+.message.mine.end .system-container .system {
+  border-bottom-right-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.message .system-container .system {
+  margin: 1px 0px;
+  background: #f4f4f8;
+  padding: 10px 15px;
+  
+  max-width: 75%;
+ border-radius: 20px;
+ border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px; 
+}
+
+.message.mine .system-container .system {
+  background: rgb(110, 110, 255);
+  color: white;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+  img{
+    max-width: 150px;
+    max-height: 150px;
+  }

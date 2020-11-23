@@ -1,0 +1,264 @@
+
+.school_Wrap{
+    width: 600px;
+    height: 330px;
+
+}
+
+.result_school_wrap{
+    width: 200px;
+    height: 200px;
+    background-color: fuchsia;
+}
+
+.school_Wrap>h1{
+    margin-top: 25px;
+    height: 30px;
+    width: 100%;
+    display: block;
+    font-size: 20px;
+  
+}
+
+.school{
+    width: 100%;
+    display: block;
+    height: 60px;
+    
+}
+
+
+.school_result{
+    width: 800px;
+    display: block;
+    height: 200px;
+    font-size: 15px;
+    line-height: 20px;
+
+}
+
+
+
+.school>form > input[type=search] {
+    width: 500px;
+    height: 50px;
+    border:0;
+    background: 0;
+    border-bottom: 1px solid #CDC9C5;
+    padding-left: 15px;
+    font-size: 20px;
+    float: left;
+    background-position: 98% 15px;
+    -webkit-background-size: 23px;
+    background-size: 23px;;
+    background-color:#fff;
+}
+
+.header_button{
+    display: block;
+    width: 50px;
+    height: 50px;
+    background:#fff url('../image/header_search.png') no-repeat;
+    -webkit-background-size: 25px;
+    background-size: 25px;
+    background-position: center;
+    
+    border: none;
+    outline: none;
+    cursor: pointer;
+    float: left;
+    position: static;
+
+}
+
+.schoolinfo_result{
+    width: 200px;
+    height: 200px;
+    background-color: green;
+}
+
+
+.school_result_view>ul>li
+{
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/*학교 부분 끝 */
+
+
+.email_Wrap{
+    margin-top: 35px;
+    width: 600px;
+    height: 300px;
+
+
+}
+.email_Wrap>h1{
+    height: 50px;
+    width: 100%;
+    display: block;
+    font-size: 20px;
+
+}
+
+
+.email{
+    width: 100%;
+    display: block;
+    height: 70px;
+ 
+}
+
+.email>form > input[type=search] {
+    width: 400px;
+    height: 50px;
+    border:0;
+    background: 0;
+    border-bottom: 1px solid #CDC9C5;
+    padding-left: 15px;
+    font-size: 20px;
+    float: left;
+    background-position: 98% 15px;
+    -webkit-background-size: 23px;
+    background-size: 23px;;
+    background-color:#fff;
+}
+
+ 
+.emial_header_button {
+
+    -webkit-background-size: 25px;
+    background-size: 25px;
+    display: block;
+    width: 140px;
+    height: 50px;
+    position: static;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #fff;
+    background: linear-gradient(45deg, #FE6B8B 30%,#f8819a 90%);
+    border: none;
+    border-radius: 45px;
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+    background-position: center;
+    float: left;
+
+    }
+  
+  .emial_header_button:hover {
+    background-color:#000;
+    box-shadow: 0px 15px 20px;
+    transform: translateY(-3px);
+  }
+
+/*이메일 부분 끝 */
+
+
+
+
+.check{
+    height: 50px;
+    width: 100%;
+    display: block;
+    font-size: 20px;
+    margin-top: 50px;
+
+}
+ 
+
+
+.check_button {
+    margin-right: 20px;
+	-moz-box-shadow:inset 0px 39px 0px -24px #ffffff;
+	-webkit-box-shadow:inset 0px 39px 0px -24px #ffffff;
+	box-shadow:inset 0px 39px 0px -24px #ffffff;
+	background-color:#ffffff;
+	-webkit-border-top-left-radius:4px;
+	-moz-border-radius-topleft:4px;
+	border-top-left-radius:4px;
+	-webkit-border-top-right-radius:4px;
+	-moz-border-radius-topright:4px;
+	border-top-right-radius:4px;
+	-webkit-border-bottom-right-radius:4px;
+	-moz-border-radius-bottomright:4px;
+	border-bottom-right-radius:4px;
+	-webkit-border-bottom-left-radius:4px;
+	-moz-border-radius-bottomleft:4px;
+	border-bottom-left-radius:4px;
+text-indent:0;
+	border:0.989583px solid #fe6b8b;
+	display:inline-block;
+	color:#fe6b8b;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+height:50px;
+	line-height:50px;
+width:80px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:0px 1px 0px #fe6b8b;
+}.check_button:hover {
+	background-color:#ffffff;
+}.check_button:active {
+	position:relative;
+	top:1px;
+}
+
+/**/
+
+.Schoo_result_Warp{
+
+    width: 100%;
+    height: 80px;
+ 
+    padding:10px;
+    margin-bottom: 10px;
+ 
+    
+}
+.Schoo_result_Container{
+    width: 100%;
+    height: 60px;
+  
+
+
+}
+.Schoo_result_Container ul{
+
+    float: left;
+    display: block;
+ 
+    margin-top: 10px;
+    margin-left: 14px;
+}
+
+
+.Schoo_result_Container ul li{
+    font-size: 20px;
+    line-height: 25px;
+    color: rgb(78, 91, 134);
+    height:36px;
+    float: left;
+    
+
+ 
+
+}
+
+.Schoo_result_Container img{
+    height:25px;
+    width: 25px;
+
+
+}
