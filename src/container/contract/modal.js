@@ -76,7 +76,6 @@ class modal extends Component{
 
   initWeb3 = async() =>{
     if(window.ethereum){
-      console.log('Recent mode')
       this.web3 =new Web3(window.ethereum);
 
       try{
@@ -87,7 +86,6 @@ class modal extends Component{
     }
 
     else if(window.web3){
-      console.log('legacy mode')
       this.web3=new Web3(Web3.currentProvider);
     }
     else{
@@ -134,9 +132,7 @@ class modal extends Component{
       // 게시판에서 판매자ID 가격 가져오기 (게시판 ID 이용해서)
       const accounts = await this.web3.eth.getAccounts();
       this.buyeraccount = accounts[0]; // 현재 계정은 owner
-      console.log(this.buyeraccount);
   
-
       axios
       .get(ip+"/contract/board", { 
         params: {
@@ -150,11 +146,6 @@ class modal extends Component{
             sellerId: boarddata[0].sellerId, //판매자아이디
             fee:boarddata[0].price,
         }); // end of setState
-
-        console.log(boarddata);
-        console.log(this.state.sellerId);
-        console.log(this.state.fee);
-
         
       //----------------------------아이디 , 가격 get--------------------------------------//
 
@@ -167,7 +158,6 @@ class modal extends Component{
         };
     
                 axios.post(ip+"/contract/contract", { contract }).then((res) => {
-                 console.log(res);
 
                 });
 
@@ -183,7 +173,6 @@ class modal extends Component{
       axios.get(ip+"/contract/contract").then((data) => {
       
         const tradedata = data.data[0];
-        console.log(data);
         this.setState({
           tradeNum: tradedata[0],
       }); // end of setState
@@ -201,7 +190,6 @@ class modal extends Component{
     
         this.getInfo()   
         let trade =this.parepeopleContract.methods.getContractInfo(this.state.tradeNum).call();
-        console.log(trade);
   
     }
 
@@ -211,8 +199,6 @@ class modal extends Component{
 
     const accounts = await this.web3.eth.getAccounts();
     this.selleraccount = accounts[0]; // 현재 계정은 owner
-    console.log(this.selleraccount);
-
     axios
       .get(ip+"/contract", { 
         params: {
@@ -249,9 +235,6 @@ class modal extends Component{
         })
         this.getInfo()
         let trade =this.parepeopleContract.methods.getContractInfo(this.state.tradeNum).call();
-        console.log(trade);
-       
-
       });    
   }
 
@@ -260,8 +243,6 @@ class modal extends Component{
 
   //물건 입금 (구)
   buyfleamarket = async() =>{
-
-    console.log("buyConfirm");
 
     let cost = this.state.fee * 1000000000000000000 //이더를 웨이로
     this.parepeopleContract.methods.buyfleamarket(this.state.tradeNum).send({ from: this.state.buyerAddress, value: cost});

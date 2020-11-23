@@ -37,7 +37,6 @@ function BoardDetail(props) {
     const [imgBase64Ary, setImgBase64Ary] = useState([]) // 미리보기
     const [responseTmp, setResPonseTmp] = useState('')
     const [level, setLevel] = useState('')
-    const [sellerInfo, setSellerInfo] = useState("")        //판매자정보저장
     
     useEffect(() => {
         setTitle(board.title)
@@ -116,7 +115,6 @@ function BoardDetail(props) {
             })
             .then((data) => {
                 const state = data.data
-                console.log(data , state)
                 setOpen(false)
                 getBoards()
                 if (state===0 || state===1 || state===7 || state===11) 

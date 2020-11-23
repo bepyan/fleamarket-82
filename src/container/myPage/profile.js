@@ -127,7 +127,6 @@ function MypageProfile(props) {
 
                 const list = data.data;    //받아옴
                 setAllMysellList(list)
-                console.log("user id : " + id);
             })
             .catch(err => console.log(err));
     }

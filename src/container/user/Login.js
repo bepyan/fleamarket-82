@@ -31,7 +31,6 @@ function Login(props) {
         window.sessionStorage.setItem('id',id)
         window.sessionStorage.setItem('nickname', res.nickname)
         window.sessionStorage.setItem('school',res.school)
-        console.log(res.school);
         enqueueSnackbar('로그인에 성공했습니다')
         props.onLogin()
         props.history.push('/')

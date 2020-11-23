@@ -33,6 +33,8 @@ function Search(props) {
   
   // 검색어 입력 횟수 누적
   const searchHit = (text=word) => {
+    if(word.replace(' ', '') === '')
+      return
     axios.post(ip+'/search', {text: text})
       .then(() => {
         getHotList()

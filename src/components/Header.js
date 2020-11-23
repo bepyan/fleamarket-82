@@ -41,7 +41,6 @@ function Header(props) {
   const id = window.sessionStorage.getItem("id")
 
   const clickLogo = () => {
-    console.log(props.history.location.pathname)
     if(props.history.location.pathname === '/')
       window.location.reload()
     else

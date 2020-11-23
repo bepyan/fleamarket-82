@@ -56,7 +56,6 @@ function Schooltest(props) {
     }
     const updateData = (res) => {
         setschool(res.data)
-        console.log(res.data)
     }
 
     /*랜덤번호 */

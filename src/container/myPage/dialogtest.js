@@ -72,8 +72,6 @@ function Dialogtest(props) {
                 school : school,
             })
             .then((res) => {
-                console.log(res);
-                
                 window.sessionStorage.setItem('school', school)
                 props.refresh()
                 enqueueSnackbar('수정되었습니다 !')
@@ -100,12 +98,9 @@ function Dialogtest(props) {
             })
             .then(data=>{
                 const result = data.data[0].count
-                console.log(result)
                 if(result!==0) {
-                    console.log("회원삭제불가")
                     setDeleteValid(false)}
                 else {
-                    console.log("회원삭제가능")
                     setDeleteValid(true)}
             })
             .catch(err=>{console.log(err)})

@@ -83,7 +83,6 @@ function ChatRoom(props) {
             .then((data)=>{
                 const logData = data.data;
                 if (logData[1]) {
-                    console.log(logData[0].user_id, logData[0].sendTime, logData[1].user_id, logData[1].sendTime)
                     calcTime(logData[0].user_id, logData[0].sendTime, logData[1].user_id, logData[1].sendTime)
                 }
             })
@@ -93,15 +92,12 @@ function ChatRoom(props) {
         /* 시간계산함수 */
         const calcTime = (id1,st1,id2,st2) => {
             let time = parseInt( (new Date(st1) - new Date(st2) )/1000)
-            console.log("시간차: ",time,"초")
             if (id1 !== id2 && time < 1800) {
                 axios
                     .post(ip + "/chat/chatScore", {
                         user_id: id1
                     })
-                    .then(res => {
-                        console.log(res)
-                        console.log("점수상승")
+                    .then(() => {
                     })
                     .catch(err => console.log(err))
             }

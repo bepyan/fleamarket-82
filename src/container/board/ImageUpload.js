@@ -38,7 +38,6 @@ function ImageUpload(props) {
                 if(base64){
                     let arr = imgBase64Ary
                     arr.push(base64.toString())
-                    console.log(arr)
                     setImgBase64Ary([...arr])
                 }
             }
