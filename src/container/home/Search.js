@@ -27,10 +27,6 @@ function Search(props) {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    if(user_id){
-      props.history.push("/login")
-      return enqueueSnackbar('로그인하셔야 합니다', { variant: 'error'})
-    }
     searchHit()
     getBoards({search: word})
   }
@@ -71,6 +67,10 @@ function Search(props) {
     getBoards({search: text})
   }
   const registKeyword = () => {
+    if(user_id){
+      props.history.push("/login")
+      return enqueueSnackbar('로그인하셔야 합니다', { variant: 'error'})
+    }
     var invaild = (word.replace(' ', '') === '')
     keywords.map((item) => {
       if(item.keyword === word){
