@@ -66,7 +66,7 @@ router.get('/sell', async (req, res) => {
 
 
 router.get('/new', async (req, res) => {
-    var sql = 'INSERT INTO chats(seller_id,buyer_id,board_id,state) SELECT ?, ?, ?, 0 FROM DUAL WHERE NOT exists (SELECT id FROM chats WHERE seller_id=? and buyer_id=? and board_id=?)'
+    var sql = 'INSERT INTO chats(seller_id,buyer_id,board_id,state,updateTime) SELECT ?, ?, ?, 0, now() FROM DUAL WHERE NOT exists (SELECT id FROM chats WHERE seller_id=? and buyer_id=? and board_id=?)'
     const body = req.query
     const params = [body.seller_id, body.buyer_id, body.board_id, body.seller_id, body.buyer_id, body.board_id]
 
