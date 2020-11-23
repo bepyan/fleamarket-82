@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/fleamarket-82/static/css/main.6ed44148.chunk.css",
-    "main.js": "/fleamarket-82/static/js/main.8a4cc690.chunk.js",
-    "main.js.map": "/fleamarket-82/static/js/main.8a4cc690.chunk.js.map",
+    "main.js": "/fleamarket-82/static/js/main.4eb28d23.chunk.js",
+    "main.js.map": "/fleamarket-82/static/js/main.4eb28d23.chunk.js.map",
     "runtime-main.js": "/fleamarket-82/static/js/runtime-main.337f3e98.js",
     "runtime-main.js.map": "/fleamarket-82/static/js/runtime-main.337f3e98.js.map",
     "static/js/2.33c731d5.chunk.js": "/fleamarket-82/static/js/2.33c731d5.chunk.js",
     "static/js/2.33c731d5.chunk.js.map": "/fleamarket-82/static/js/2.33c731d5.chunk.js.map",
     "index.html": "/fleamarket-82/index.html",
-    "precache-manifest.74e31e84494f6f1552e7642a7c637143.js": "/fleamarket-82/precache-manifest.74e31e84494f6f1552e7642a7c637143.js",
+    "precache-manifest.7ce55ebaea2108214c4bf49a0423113b.js": "/fleamarket-82/precache-manifest.7ce55ebaea2108214c4bf49a0423113b.js",
     "service-worker.js": "/fleamarket-82/service-worker.js",
     "static/css/main.6ed44148.chunk.css.map": "/fleamarket-82/static/css/main.6ed44148.chunk.css.map",
     "static/js/2.33c731d5.chunk.js.LICENSE.txt": "/fleamarket-82/static/js/2.33c731d5.chunk.js.LICENSE.txt",
@@ -21,6 +21,6 @@
     "static/js/runtime-main.337f3e98.js",
     "static/js/2.33c731d5.chunk.js",
     "static/css/main.6ed44148.chunk.css",
-    "static/js/main.8a4cc690.chunk.js"
+    "static/js/main.4eb28d23.chunk.js"
   ]
 }
