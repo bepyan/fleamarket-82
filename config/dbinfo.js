@@ -11,5 +11,16 @@ const pool = mysql.createPool({
   multipleStatements: true,
 })
 
+// const pool = mysql.createPool({
+//   host: 'localhost',
+//   port: 3306, 
+//   user: 'root',
+//   password: 'asdf',
+//   database: 'party',
+//   connectionLimit: 100,
+//   dateStrings:'date',
+//   multipleStatements: true,
+// })
+
 
 module.exports = pool

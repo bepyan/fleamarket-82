@@ -38,13 +38,13 @@ router.post('/register', async (req, res, next) => {
     id: data.id, 
     pw: data.pw, 
     nickname: data.nickName,
-    name:data.name,
+    name: data.name,
     phone: data.phone,
     address: data.address,
     birth: data.birth,
     school: data.school,
-    level:0,
-    responseRate:0 
+    level: 0,
+    responseRate: 36.5 
   }
   const conn = await pool.getConnection()
   try {

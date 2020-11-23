@@ -7,7 +7,8 @@ router.get('/', async (req, res) => {
     // req.query: {id, type}
     // type 'all': 전체  'shopping': 구매  'selling': 판매
     //var sql = 'SELECT * FROM chats WHERE seller_id = ? OR buyer_id = ?'
-    var sql = "SELECT distinct chats.id, chats.seller_id, chats.buyer_id, chats.board_id, chats.state, chats.unread, chats.updateTime, boards.title, boards.price, boards.images FROM chats JOIN boards ON (chats.board_id = boards.id AND (chats.seller_id = ? OR chats.buyer_id=?)) ORDER BY chats.updateTime DESC"
+    var sql = "SELECT distinct chats.id, chats.seller_id, chats.buyer_id, chats.board_id, chats.state, chats.updateTime, chats.unread, boards.title, boards.price, boards.images " 
+    + "FROM chats, boards WHERE (chats.board_id = boards.id AND (chats.seller_id = ? OR chats.buyer_id=?)) ORDER BY chats.updateTime DESC"
     const seller_id = req.query.type==='shopping' ?  -1 : req.query.id
     const buyer_id = req.query.type==='selling' ?  -1 : req.query.id
     const params =  [seller_id, buyer_id]
@@ -26,59 +27,22 @@ router.get('/', async (req, res) => {
     } 
 })
 
-router.get('/room', async (req, res) => {
-    var sql = "SELECT distinct chats.id, chats.seller_id, chats.buyer_id, chats.board_id, chats.state, chats.unread, chats.updateTime, boards.title, boards.price, boards.images FROM chats JOIN boards ON (chats.board_id = boards.id AND (chats.id = ?))"
-    const params =  [req.query.id]
+
+router.post('/new', async (req, res) => {
+    // id, seller_id, buyer_id, board_id, state, updateTime, unread
+    var existSQL = 'SELECT EXISTS (SELECT * FROM chats WHERE seller_id=? and buyer_id=? and board_id=?) as exist'
+    var sql = 'INSERT INTO chats VALUES(null, ?, ?, ?, 0, now(), 1) '
+    const body = req.body
+    const params = [body.seller_id, body.buyer_id, body.board_id]
     const conn = await pool.getConnection()
     try {
-        const room = await conn.query(sql, params)
-       
+        const exist = (await conn.query(existSQL, params))[0][0].exist
         await conn.commit()
-        return res.json({room: room[0]})
-    } catch (err) {
-        console.log(err)
-        conn.rollback()
-        return res.status(500).json(err)
-    } finally {
-        conn.release()
-    } 
-})
-
-router.get('/sell', async (req, res) => {
-    // req.query: {id, type}
-    // type 0: 전체  1: 구매 
-    var sql = 'SELECT * FROM chats WHERE seller_id = ? OR buyer_id = ?'
-    const conn = await pool.getConnection()
-    try {
-        const chats = await conn.query(sql, [req.query.id, req.query.id])
-        await conn.commit()
-        return res.json({chats: chats})
-    } catch (err) {
-        console.log(err)
-        conn.rollback()
-        return res.status(500).json(err)
-    } finally {
-        conn.release()
-    } 
-})
-
-
-
-
-router.get('/new', async (req, res) => {
-    var sql = 'INSERT INTO chats(seller_id,buyer_id,board_id,state,updateTime) SELECT ?, ?, ?, 0, now() FROM DUAL WHERE NOT exists (SELECT id FROM chats WHERE seller_id=? and buyer_id=? and board_id=?)'
-    const body = req.query
-    const params = [body.seller_id, body.buyer_id, body.board_id, body.seller_id, body.buyer_id, body.board_id]
-
-    //var sql2 = 'SELECT LAST_INSERT_ID()'
-    var sql2 = 'SELECT id FROM chats WHERE seller_id=? AND buyer_id=? AND board_id=?'
-    const params2 = [body.seller_id, body.buyer_id, body.board_id]
-    const conn = await pool.getConnection()
-    try {
+        if(exist)
+            return res.json({success: false, message: '이미 채팅방이 존재합니다.'})
         await conn.query(sql, params)
-        const room_id = await conn.query(sql2, params2)
         await conn.commit()
-        return res.json({id:room_id[0][0].id})
+        return res.json({success: true})
     } catch (err) {
         console.log(err)
         conn.rollback()
@@ -87,6 +51,7 @@ router.get('/new', async (req, res) => {
         conn.release()
     }
 })
+
 
 /* 채팅방 메시지 조회 */
 router.get('/chatlog', async (req, res) => {
@@ -147,12 +112,14 @@ router.post('/chatlog', async (req, res) => {
         conn.release()
     } 
 })
-//읽음 표시
+
+/* 채팅방 읽음 표시 */
 router.post('/updateRead', async(req, res)=>{
+    // req.body = {chat_id: chat_id}
+    // unread  1: 않읽음  0: 읽음
     var sql = 'UPDATE chats SET unread = ? WHERE id = ?'
     const conn = await pool.getConnection()
-    var unread=0;
-    const param = [unread, req.body.id]
+    const param = [0, req.body.chat_id]
     
     try {
         await conn.query(sql, param)
@@ -191,9 +158,6 @@ router.post('/exit', async (req, res) => {
           conn.release()
       } 
 })
-
-
-
 
 /* 채팅시간 가져오는 함수 */
 router.get('/chatTime', async (req,res) =>{
