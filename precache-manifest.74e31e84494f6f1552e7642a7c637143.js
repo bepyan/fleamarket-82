@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "11844d6c1d3b6b13f09ea7fcb9687b97",
+    "revision": "8bdb3b1d9e55b427ed57ba3b1fbf428d",
     "url": "/fleamarket-82/index.html"
   },
   {
-    "revision": "31d653db5d253811e961",
+    "revision": "8baab7948b51df0eda6f",
     "url": "/fleamarket-82/static/css/main.6ed44148.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/fleamarket-82/static/js/2.33c731d5.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "31d653db5d253811e961",
-    "url": "/fleamarket-82/static/js/main.e37744e6.chunk.js"
+    "revision": "8baab7948b51df0eda6f",
+    "url": "/fleamarket-82/static/js/main.8a4cc690.chunk.js"
   },
   {
     "revision": "7ecc3893d93396396509",
