@@ -1,4 +1,4 @@
 const io = require('socket.io-client');
-const socket = io.connect('https://fleamarket-82.herokuapp.com/');
+const socket = io.connect();
 
 module.exports = socket; 
