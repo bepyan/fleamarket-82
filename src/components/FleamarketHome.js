@@ -6,7 +6,6 @@ import UploadBoard from "../container/board/UploadBoard";
 import Chat from "../container/chat/Chat"
 import Filter from "../container/home/Filter"
 import Search from "../container/home/Search"
-import Alert from "../container/home/Alert"
 import Board from "../container/board/Board"
 
 import { Collapse, Grid, IconButton } from "@material-ui/core";
@@ -17,8 +16,6 @@ function FleamarketHome(props){
   const { enqueueSnackbar } = useSnackbar()
   const [openUL, setOpenUL] = useState(false)
   const [openChat, setOpenChat] = useState(false) 
-  const [alertOption, setAlertOption] = useState({})
-  const loginAlert= {open: true, text: "로그인하시지요..", doAfter: () => {props.history.push("/login")}}
   
   const [boards, setBoards] = useState([])
   const [word, setWord] = useState("")
@@ -31,18 +28,22 @@ function FleamarketHome(props){
   const [viewNoContract, setViewNoContract] = useState(false)
 
   const clickUL = () => {
-    if(!window.sessionStorage.getItem("id"))
-      return setAlertOption(loginAlert)
+    if(!window.sessionStorage.getItem("id")){
+      props.history.push("/login")
+      return enqueueSnackbar('로그인하셔야 합니다', { variant: 'error'})
+    }
     if(!openUL)
       setOpenChat(false)
     setOpenUL(!openUL)
   }
   const clickMyPage = () => {
-    if(!window.sessionStorage.getItem("id"))
-      return setAlertOption(loginAlert)
+    if(!window.sessionStorage.getItem("id")){
+      props.history.push("/login")
+      return enqueueSnackbar('로그인하셔야 합니다', { variant: 'error'})
+    }
     props.history.push('/mypage')
-
   }
+
   // SHOW_CNT 개수 만큼 계속 게시물을 가져온다 / 필터링 / 기본 시간순 출력
   const getBoards = (arg={}) => {
     var options = {
@@ -74,21 +75,8 @@ function FleamarketHome(props){
     getBoards()
   }, []) 
 
-  const messageSnackbar = (type) => {
-    switch(type){
-      default: case 0: case 20: return '메시지를 보냈습니다'
-      case 1: return '[구매요청] 했습니다'
-      case 2: return '[구매수락] 했습니다'
-      case 3: return '[송금] 했습니다'
-      case 4: return '[구매확정] 했습니다'
-      case 9: return '채팅방을 나갔습니다'
-      case 10: return '거래 취소했습니다'
-    }
-  }
-
   return (
     <div>
-      <Alert option={alertOption}/>
       <Grid spacing={1} container justify="center" alignItems="center" style={{marginTop: '1rem'}}>
         {/* 액션창 */}
         <Grid item xs={12}>

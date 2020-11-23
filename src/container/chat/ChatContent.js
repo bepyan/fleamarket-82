@@ -33,7 +33,7 @@ function ChatContent(props) {
             // 일반 채팅
             case 0:
                 return <div>
-                    {message.contents}
+                    <p>{message.contents}</p>
                 </div>
 
                 
@@ -115,7 +115,7 @@ function ChatContent(props) {
                         {contents(message)}
                     </div>
                 </div>
-                <div className="timestamp">
+                <div className="timestamp" >
                     {showTime()}
                 </div>
                 <div ref={messagesEndRef} />

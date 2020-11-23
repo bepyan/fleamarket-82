@@ -85,7 +85,6 @@ function Conteact(props) {
       try{await window.ethereum.enable();}catch(error){}}
       else if(window.web3){
           web3=new Web3(Web3.currentProvider); }
-             else{console.log('Non-Ethereum browser detected. You should consider trying MetaMask'); }
     Contract=new web3.eth.Contract(partypeopleABI,partypeopleAddress); 
     getContract(Contract)
     setContract(Contract)
@@ -131,7 +130,9 @@ function Conteact(props) {
         console.log(err)
         alert("업데이트에러")
       })
+    
     if (state===4 || state===7){
+
       setUserLevel(state) //레벨설정
     }
   }
@@ -147,7 +148,7 @@ function Conteact(props) {
         buyer_id:room.buyer_id,
         seller_id:room.seller_id};
         axios.post(ip+"/contract/contract", { contract }).then((res) => 
-          {  
+          {
              updatestate(1)
              props.sendMessage(1)
              setstage(1)
@@ -249,15 +250,17 @@ await props.sendMessage(4)
 
  /* 나의레벨 */
  const setUserLevel = (state) => {
-  if (0 < level && level < 100 && state!==4 && state !== 7){
+  if (0 <= level && level < 100 && state!==4  && state!==7){
     axios
       .post("/chat/updatelevel", {
         room_state: state,
         chat_id: room.id
       })
+      .then(res => {
+
+      })
       .catch(err => {
-          console.log(err)
-          alert(err)
+
       })
   }
 
@@ -272,11 +275,8 @@ const getLevel = () => {
     })
     .then(data => {
       const result = data.data[0]
+
       setLevel(result.level)
-    })
-    .catch(err => {
-        console.log(err)
-        alert(err)
     })
 }
 

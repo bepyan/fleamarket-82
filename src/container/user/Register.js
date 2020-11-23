@@ -1,16 +1,14 @@
-
 import React, { useState } from "react";
-import axios from "axios";
 import { withRouter } from "react-router-dom";
+import { useSnackbar } from 'notistack';
+import axios from "axios";
 import {ip} from "../../store/ip"
-import {TextField, Button, Container, Grid} from "@material-ui/core";
 import SchoolCheck from "./schooltest";
-import Alert from "../home/Alert";
+
+import {TextField, Button, Container, Grid} from "@material-ui/core";
 
 function Register() {
-  const [alertOption, setAlertOption] = useState({})
-  const inputAlert = {open: true, text: "모든 값을 넣어 주셔야 합니다.."}
-  const registAlert = {open: true, text: "회원가입에 성공했습니다! 로그인하세요!", doAfter: () => {window.location.reload()}}
+  const { enqueueSnackbar } = useSnackbar()
 
   const [id, setId] = useState("")
   const [pw, setPw] = useState("")
@@ -76,14 +74,14 @@ function Register() {
     };
     // 입력이 전부 있는지 체크
     if(!id || !pw || !name || !nickName || !phone || !address || !birth){
-      setAlertOption(inputAlert)
-      return
+      return enqueueSnackbar('모든 값을 넣어 주셔야 합니다..', { variant: 'error'})
     }
   
     // 데이터 입력
     axios.post(ip+"/users/register", newUser)
       .then(() => {
-        setAlertOption(registAlert)
+        enqueueSnackbar('모든 값을 넣어 주셔야 합니다..', { variant: 'success'})
+        window.location.reload()
       })
       .catch(e => {
         console.log(e)
@@ -92,7 +90,6 @@ function Register() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Alert option={alertOption}/>
       <form noValidate onSubmit={onSubmit}>
         <Grid container spacing={2}>
           {/* 아이디 */}

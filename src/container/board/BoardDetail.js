@@ -4,11 +4,10 @@ import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import {ip} from "../../store/ip"
 import getImageUrls from "../../firebase/getImageUrls";
-import Alert from "../home/Alert";
 import ImageUpload from "./ImageUpload";
 import Progress from "./Progress";
 
-import { Button, IconButton, InputAdornment, InputBase,Tooltip, Typography } from '@material-ui/core'
+import { Button, IconButton, InputAdornment, InputBase, Typography } from '@material-ui/core'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
 import DeleteOutlineRoundedIcon from '@material-ui/icons/DeleteOutlineRounded';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -45,12 +44,10 @@ function BoardDetail(props) {
         setImgAry(board.images.split(" "))
         setImgBase64Ary([])
         getSellerInfo()
-    }, board)
+    }, [board])
 
     const [edit, setEdit] = useState(false)
     const [wish, setWish] = props.useWish   
-    const [alertOption, setAlertOption] = useState({})
-    const loginAlert = {open: true, text: "로그인하시지요..", doAfter: () => {props.history.push("/login")}}
 
     const [openDialog, setOpenDialog] = useState(false) 
     const [loading, setLoading] = useState(0)
@@ -136,7 +133,6 @@ function BoardDetail(props) {
             setImgUrls(''); setImgAry(oriImgAry); setImgBase64Ary([]);
             return
         }
-
         var isImgChange = false
         var isNewImage = false
         if(oriImgAry.length === imgAry.length){
@@ -187,14 +183,14 @@ function BoardDetail(props) {
     }
     const creatChat = () => {
         if(!user_id)
-            return setAlertOption(loginAlert)
+            return enqueueSnackbar('로그인하셔야 합니다', { variant: 'error'})
 
-        var newRoom_id = 0    
-        axios.get(ip+'/chat/new', {params:{seller_id: board.seller_id, buyer_id: user_id, board_id: board.id}})
+        axios.post(ip+'/chat/new', {seller_id: board.seller_id, buyer_id: user_id, board_id: board.id})
             .then(res => {
+                if(!res.data.success)
+                    return enqueueSnackbar(res.data.message)
                 setOpen(false)
                 enqueueSnackbar(board.seller_id + '님과 대화를 시작합니다.')
-                newRoom_id = res.data.id
             })
             .catch(err => {
                 console.log(err)
@@ -205,7 +201,7 @@ function BoardDetail(props) {
     }
     const wishBoard = () => {
         if(!user_id)
-            return setAlertOption(loginAlert)
+            return enqueueSnackbar('로그인하셔야 합니다', { variant: 'error'})
             
         axios.post(ip+'/board/wish', {isWish: wish, user_id: user_id, board_id: board.id})
         .then(() => {
@@ -349,7 +345,6 @@ function BoardDetail(props) {
             <DialogActions>
                 <BoardAction/>
             </DialogActions>
-            <Alert option={alertOption}/>
         </Dialog>
     )
 }

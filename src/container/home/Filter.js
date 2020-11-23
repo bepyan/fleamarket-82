@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import Alert from '../home/Alert'
+import { useSnackbar } from 'notistack';
 
 import { Button, FormControlLabel, Grid, Switch } from '@material-ui/core'
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
@@ -9,11 +9,9 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 
 function Filter(props) {
+  const { enqueueSnackbar } = useSnackbar()
   const school = window.sessionStorage.getItem("school")
   const getBoards = props.getBoards
-  const [alertOption, setAlertOption] = useState({})
-  const loginAlert= {open: true, text: "로그인하시지요..", doAfter: () => {props.history.push("/login")}}
-  const noSchoolAlert= {open: true, text: "내 학교를 인증받으세요!", doAfter: () => {props.history.push("/mypage")}}
       
   const [type, setType] = props.useType
   const [align, setAlign] = props.useAlign
@@ -39,10 +37,14 @@ function Filter(props) {
       setDesc(!desc)
   }
   const changeMySchool = () => {
-    if(!window.sessionStorage.getItem("id"))
-      return setAlertOption(loginAlert)
-    if(school === '')
-      return setAlertOption(noSchoolAlert)
+    if(!window.sessionStorage.getItem("id")){
+      props.history.push("/login")
+      return enqueueSnackbar('로그인하셔야 합니다', { variant: 'error'})
+    }
+    if(school === ''){
+      props.history.push("/mypage")
+      return enqueueSnackbar('내 학교를 인증받으세요!', { variant: 'error'})
+    }
 
     setMySchoolText(viewMySchool? '' : school)
     getBoards({school: viewMySchool? '' : school})
@@ -78,7 +80,6 @@ function Filter(props) {
             label={mySchoolText===''? '내 학교' : mySchoolText}
           />
         </Grid>
-        <Alert option={alertOption}/>
 
         <Grid item>
           <ToggleButtonGroup value={align} onChange={changeAlign} exclusive style={{maxHeight: 50}}>

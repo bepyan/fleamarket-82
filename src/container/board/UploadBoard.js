@@ -4,7 +4,6 @@ import axios from 'axios'
 import {ip} from "../../store/ip"
 import getImageUrls from "../../firebase/getImageUrls";
 import Progress from "./Progress";
-import Alert from '../home/Alert'
 
 import { Dialog, DialogContent, DialogContentText, Grid, IconButton, Input, InputAdornment, Paper, TextField, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
@@ -29,9 +28,6 @@ function UploadBoardPage(props) {
     const [open, setOpen] = useState(false) 
     const [loading, setLoading] = useState(0)
 
-    const [alertOption, setAlertOption] = useState({})
-    const contentAlert = {open: true, text: "모든 값을 넣어 주셔야 합니다"}
-
     // 숫자만 입력, 억 단위 이상은 지원 XX (sql price 길기가 9자리까지 수용)
     const priceChange = (e) => {
         const value = e.target.value.replace(/[^0-9]/g, '')
@@ -46,7 +42,7 @@ function UploadBoardPage(props) {
     // 파이어베이스에 사진 업로드
     const preUpload = () => {
         if(!title || !contents || !price)
-            return setAlertOption(contentAlert)
+            return enqueueSnackbar('모든 값을 넣어 주셔야 합니다', { variant: 'error'})
         
         if(imgAry.length){
             setOpen(true)
@@ -121,7 +117,6 @@ function UploadBoardPage(props) {
                             </IconButton>
                         </div>
                     </Grid>
-                    <Alert option={alertOption}/>
                 
                     <Dialog open={open}>
                         <DialogContent style={{width: "400px", textAlign: "center"}}>

@@ -17,11 +17,12 @@ li {
     justify-content: center;
   }
   .message .timestamp {
+    margin-top: 5px;
     display: flex;
     color: #999;
     font-weight: 600;
     font-size: 12px;
-    margin: -5px 0px;
+    margin: 0px 0px;
     text-transform: uppercase;
   }
   .message.mine .timestamp {
@@ -55,11 +56,10 @@ li {
   
   .message.mine.end .bubble-container .bubble {
     border-bottom-right-radius: 20px;
-    margin-bottom: 10px;
   }
   
   .message .bubble-container .bubble {
-     margin: 1px 0px;
+    margin: 1px 0px;
     background: #f4f4f8;
     padding: 10px 15px;
     border-radius: 20px;
@@ -98,14 +98,12 @@ li {
 }
 
 
-.message.mine.start .system-container .system {
-  margin-top: 10px;
+.message.mine.start .system-container .system { 
   border-top-right-radius: 20px;
 }
 
 .message.mine.end .system-container .system {
   border-bottom-right-radius: 20px;
-  margin-bottom: 10px;
 }
 
 .message .system-container .system {

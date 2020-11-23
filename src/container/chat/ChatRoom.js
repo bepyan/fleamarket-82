@@ -40,81 +40,41 @@ const useStyles = makeStyles((theme) => ({
 
 
 function ChatRoom(props) {
-    const [room, setRoom] = props.useRoom
-    const setRead = props.setRead
+    const classes = useStyles();
     const user_id = window.sessionStorage.getItem('id')
+    const hiddenFileInput = React.useRef(null)
+    const updateRead = props.updateRead
+    const [room, setRoom] = props.useRoom
+
     const [text, setText] = useState("")
     const [chatlog, setChatlog] = useState([])
-
-    const [other_user, setOtherUser] = useState('');
-    const classes = useStyles();
-
+    const [other_user, setOtherUser] = useState('')
+    
     useEffect(() => {
         getChatlog()
-        setOther()
-        setRead(room.id, false)
-    }, [room])
-
-    /* 채팅로그 아이디, 시간 get하는 함수 */
-    const getChatlogTime = () => {
-        axios
-        .get(ip+"/chat/chatTime", {
-            params : {
-                chat_id : room.id
-            }
-        })
-        .then((data)=>{
-            const logData = data.data;
-            if (logData[1]) {
-                calcTime(logData[0].user_id, logData[0].sendTime, logData[1].user_id, logData[1].sendTime)
-            }
-        })
-        .catch(err=>console.log(err))
-
-    }
-    /* 시간계산함수 */
-    const calcTime = (id1,st1,id2,st2) => {
-        let time = parseInt( (new Date(st1) - new Date(st2) )/1000)
-        if (id1 !== id2 && time < 1800) {
-            axios
-                .post(ip + "/chat/chatScore", {
-                    user_id: id1
-                })
-                .then(() => {
-                })
-                .catch(err => console.log(err))
-        }
-    }
+        setOtherUser(room.seller_id === user_id ? room.buyer_id : room.seller_id)
+    }, room)
     
-
-    const hiddenFileInput = React.useRef(null);
-
-    const isSeller = (id) => {
-        return room.seller_id === id
-    }
-
+    /* 채팅로그 조회 */
     const getChatlog = () => {
         if (!room.id)
             return
 
         axios.get(ip + "/chat/chatlog", { params: { id: room.id } })
             .then(res => {
-                if (chatlog !== res.data.chatlog[0]) {
-                    setChatlog(res.data.chatlog[0])
-                }
+                const data =  res.data.chatlog[0]
+                if (chatlog !== data)
+                    setChatlog(data)
             })
             .catch(err => {
                 console.log(err)
-                alert(err)
+                alert('채팅로그 조회 실패')
             })
     }
-    const updateChatlog = (log) => {
-        var copy = chatlog.concat()
-        copy.push(log)
-        setChatlog(copy)
-    }
+    /* 채팅방 새로고침 */
     const clickRefresh = () => {
         getChatlog()
+        updateRead(room.id)
     }
 
     // type 0: 일반 메시지 1: 구매요청 2: 구매수락 3: 물품구매 4: 구매확정 5: 거래완료 10: 거래취소
@@ -124,23 +84,39 @@ function ChatRoom(props) {
         const log = { chat_id: room.id, user_id: user_id, contents: type ? url : text, type: type, sendTime:time }
         axios.post(ip + "/chat/chatlog", log)
             .then(() => {
-                //getChatlog()
-                updateChatlog(log)
+                clickRefresh()
                 setText("")
-                getChatlogTime()
             })
             .catch(err => {
                 console.log(err)
                 alert(err)
             })
     }
- 
-  
+    /* 채팅방 나가기 */
+    const exitRoom = () => {
+        if (room.state === 0 || room.state === 5 || room.state === 10) {
+            let result = window.confirm("정말 방을 나가시겠습니까?\n대화내용이 삭제됩니다")
+            if (result) {
+                sendMessage(9)
+                var type = room.seller_id === user_id ? 'seller' : 'buyer'
 
+                axios.post(ip + "/chat/exit", { type: type, id: room.id })
+                    .then(() => {
+                        setRoom({})
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        alert(err)
+                    })
+            }
+        } else
+            alert('거래 중일 때는 방을 나가실 수 없습니다')
+    }
+ 
     // 사진 업로드
-    const handleClick = e => {
+    const handleClick = () => {
         hiddenFileInput.current.click();
-    };
+    }
     const uploadImage = (e) => {
         if (e.target.files[0]) {
             const img = e.target.files[0]
@@ -154,7 +130,7 @@ function ChatRoom(props) {
                     storage.ref('images').child(img.name).getDownloadURL().then(url => {
                         sendMessage(20, url)
                     })
-                });
+                })
         }
     }
 
@@ -167,26 +143,8 @@ function ChatRoom(props) {
             sendClick();
         }
     }
-    // 가격에 단위수 마다 ,콤마 찍는 함수
-    Number.prototype.format = function () {
-        if (this === 0) return 0;
-
-        var reg = /(^[+-]?\d+)(\d{3})/;
-        var n = (this + '');
-
-        while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
-
-        return n;
-    };
     
-    //방제목용 상대방 id표시
-    const setOther = () => {
-        if (room.seller_id === user_id) {
-            setOtherUser(room.buyer_id)
-        } else {
-            setOtherUser(room.seller_id)
-        }
-    }
+    // 방제목용 상대방 id표시
     const showRoomTitle = () => {
         if(other_user === ''){
             return <h3 style={{color:'#cd5c5c'}}>상대방이 나감</h3>
@@ -194,30 +152,6 @@ function ChatRoom(props) {
             return <h3 style={{color:'#000',fontSize:"18px"}}>{other_user}</h3>
         }
     }
-    const exitRoom = () => {
-        if (room.state === 0 || room.state === 5 || room.state === 10) {
-            let result = window.confirm("정말 방을 나가시겠습니까?\n대화내용이 삭제됩니다")
-            if (result) {
-                sendMessage(9)
-
-                var type = isSeller(user_id) ? 'seller' : 'buyer'
-                var data = { type: type, id: room.id }
-
-                axios.post(ip + "/chat/exit", data)
-                    .then(() => {
-                        setRoom({})
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        alert(err)
-                    })
-            }
-        } else {
-            alert('거래 중일 때는 방을 나가실 수 없습니다')
-        }
-    }
-
-
     return (
         <div>
             <header className={classes.root}>
@@ -247,7 +181,7 @@ function ChatRoom(props) {
                                 <h3 style={{ width: "300px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{room.title}</h3>
                             </Grid>
                             <Grid item xs> 
-                                <div style={{ marginTop: '0px' }}>{room.price.format()}원</div>
+                                <div style={{ marginTop: '0px' }}>{String(room.price).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</div>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -256,7 +190,7 @@ function ChatRoom(props) {
                 </Grid>
             </header>
 
-            <div style={{ overflowX: "auto", height: "480px" ,background:"#fff"}}>
+            <div style={{ overflowX: "auto", height: "480px", background:"#fff"}}>
                 {
                     chatlog.map((message, idx) => {
                         const align = (message.user_id === user_id) ? "right" : "left"
@@ -275,7 +209,7 @@ function ChatRoom(props) {
                     <InputBase onChange={(e) => setText(e.target.value.substring(0,100))}
                         value={text}
                         style={{ paddingLeft: '1rem' }}
-                        inputProps={{ 'aria-label': 'naked', size: 'small' }}
+                        inputProps={{ size: 'small' }}
                         type="text"
                         fullWidth multiline rows={3}
                         autoFocus
