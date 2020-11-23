@@ -27,6 +27,10 @@ function Search(props) {
 
   const submitHandler = (e) => {
     e.preventDefault()
+    if(user_id){
+      props.history.push("/login")
+      return enqueueSnackbar('로그인하셔야 합니다', { variant: 'error'})
+    }
     searchHit()
     getBoards({search: word})
   }
