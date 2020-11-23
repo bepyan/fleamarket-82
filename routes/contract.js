@@ -75,7 +75,7 @@ router.get("/user", async (req, res, next) => {
     var board_price = data.contract.price;
     var seller_id = data.contract.seller_id;   
     var buyer_id = data.contract.buyer_id;   
-     var sqlQuery = 'INSERT INTO contracts (chat_id,board_id,board_price,seller_id,buyer_id,state) VALUES(?,?,?,?,?,1)';
+     var sqlQuery = 'INSERT INTO contracts (chat_id,board_id,board_price,seller_id,buyer_id,state,contractDate) VALUES(?,?,?,?,?,1,now())';
      var sqlData = [chat_id,board_id,board_price,seller_id,buyer_id];
 
      const conn = await pool.getConnection()
