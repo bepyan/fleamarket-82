@@ -7,7 +7,7 @@ import SchoolCheck from "./schooltest";
 
 import {TextField, Button, Container, Grid} from "@material-ui/core";
 
-function Register() {
+function Register(props) {
   const { enqueueSnackbar } = useSnackbar()
 
   const [id, setId] = useState("")
@@ -80,7 +80,7 @@ function Register() {
     // 데이터 입력
     axios.post(ip+"/users/register", newUser)
       .then(() => {
-        window.location.reload()
+        props.history.push("/")
         enqueueSnackbar('회원가입에 성공했습니다. 로그인하세요.', { variant: 'success'})
       })
       .catch(e => {
