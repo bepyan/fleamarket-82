@@ -92,11 +92,6 @@ function FleamarketHome(props){
             <Collapse in={openUL}>
               <UploadBoard getBoards={getBoards} setOpenUL={setOpenUL}/>
             </Collapse>
-            <Collapse in={openChat}>
-              <div  style={{marginTop:"30px",marginBottom:"10px"}}>
-                <Chat />
-              </div>
-            </Collapse>
           </Grid> 
         </Grid>
 
